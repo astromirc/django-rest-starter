@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      target: local
+    depends_on:
+      - postgres
+
+  postgres:
+    restart: always
+    image: postgres:18-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/18/docker
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:

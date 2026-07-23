@@ -1,0 +1,85 @@
+[project]
+name = "django-rest-starter"
+version = "0.0.1"
+description = ""
+readme = "README.md"
+requires-python = ">=3.14,<4.0"
+dependencies = [
+  "django==6.0.7",
+  "django-cors-headers==4.9.0",
+  "django-environ==0.14.0",
+  "django-filter==26.1",
+  "django-redis==7.0.0",
+  "djangorestframework==3.17.1",
+  "drf-spectacular==0.30.0",
+  "psycopg[binary]==3.3.4",
+  "redis==8.0.1",
+]
+
+[dependency-groups]
+dev = [
+  "colorlog==6.11.0",
+  "ruff==0.15.22",
+]
+production = [
+  "django-storages[s3]==1.14.6",
+  "gunicorn==26.0.0",
+  "whitenoise==6.12.0",
+]
+
+[tool.ruff]
+exclude = [".git", ".venv", "manage.py", "migrations"]
+line-length = 88
+target-version = "py314"
+cache-dir = "~/.cache/ruff"
+
+[tool.ruff.lint]
+select = [
+  "E",    # PEP 8 errors
+  "W",    # PEP 8 warnings
+  "F",    # Logic and syntax errors
+  "I",    # Import sorting
+  "B",    # Bug detection
+  "C4",   # Comprehensions
+  "UP",   # Syntax upgrades
+  "A",    # Built-in shadowing
+  "ARG",  # Unused arguments
+  "C90",  # Function complexity
+  "DTZ",  # Datetime without timezone
+  "ERA",  # Commented-out code
+  "N",    # Naming conventions
+  "PERF", # Performance issues
+  "PIE",  # General bad practices
+  "PTH",  # Use pathlib
+  "RET",  # Return statements
+  "S",    # Security checks
+  "T20",  # Print statements
+  "PL",   # Pylint rules
+  "DJ",   # Django
+]
+
+ignore = [
+  "B904", # Allow raising exceptions without from e
+]
+
+[tool.ruff.lint.per-file-ignores]
+"core/settings/*" = [
+  "E501", # Line length limit
+  "F403", # Star imports (from .base import *)
+  "F405", # Undefined names from star imports
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+known-first-party = ["apps"]
+section-order = [
+  "standard-library",
+  "third-party",
+  "app-core",
+  "first-party",
+  "local-folder",
+]
+
+[tool.ruff.lint.isort.sections]
+"app-core" = ["core"]

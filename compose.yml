@@ -1,0 +1,19 @@
+services:
+  backend:
+    restart: always
+    build:
+      context: .
+      target: production
+    command: server
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+
+  redis:
+    restart: always
+    image: redis:8-alpine
+    ports:
+      - "6379:6379"

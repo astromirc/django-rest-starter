@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+MAX_REQUESTS=1000
+MAX_REQUESTS_JITTER=100
+WORKERS=3
+
+# Iniciando servidor según el entorno
+if [ "$DJANGO_SETTINGS_MODULE" = "core.settings.local" ]; then
+  exec python manage.py runserver "0.0.0.0:8000"
+else
+  # Estáticos
+  python manage.py collectstatic --noinput
+
+  # Iniciando servidor Gunicorn
+  exec gunicorn "core.wsgi:application" \
+    --bind "0.0.0.0:8000" \
+    --workers "$WORKERS" \
+    --max-requests "$MAX_REQUESTS" \
+    --max-requests-jitter "$MAX_REQUESTS_JITTER" \
+    --chdir /app
+fi
